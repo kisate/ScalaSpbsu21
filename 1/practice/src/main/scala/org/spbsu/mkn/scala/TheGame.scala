@@ -48,8 +48,8 @@ object TheGame {
         }
 
       } catch {
-        case e: WrongNumberLengthException => println("Wrong number length")
-        case e: RepeatingDigitsException => println("Repeating digits")
+        case _: WrongNumberLengthException => println("Wrong number length")
+        case _: RepeatingDigitsException => println("Repeating digits")
       }
     }
   }
