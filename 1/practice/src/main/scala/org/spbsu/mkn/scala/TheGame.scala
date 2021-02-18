@@ -2,6 +2,8 @@ package org.spbsu.mkn.scala
 
 import scala.io.StdIn.readLine
 import scala.util.Random
+import scala.util.control.Breaks._
+
 
 object TheGame {
 
@@ -37,19 +39,23 @@ object TheGame {
     val secret = generateNumberString(length)
     var numTries = 0
 
-    while (true) {
-      numTries += 1
-      println("Enter your guess: ")
-      val guess = readLine()
-      try {
-        validate(secret, guess, numTries) match {
-          case Correct(x) => println(s"Correct, $x tries total")
-          case Incorrect(bulls, cows) => println(s"Bulls: $bulls, cows: $cows")
-        }
+    breakable {
+      while (true) {
+        numTries += 1
+        println("Enter your guess: ")
+        val guess = readLine()
+        try {
+          validate(secret, guess, numTries) match {
+            case Correct(x) =>
+              println(s"Correct, $x tries total")
+              break
+            case Incorrect(bulls, cows) => println(s"Bulls: $bulls, cows: $cows")
+          }
 
-      } catch {
-        case e: WrongNumberLengthException => println("Wrong number length")
-        case e: RepeatingDigitsException => println("Repeating digits")
+        } catch {
+          case _: WrongNumberLengthException => println("Wrong number length")
+          case _: RepeatingDigitsException => println("Repeating digits")
+        }
       }
     }
   }
