@@ -15,13 +15,15 @@ sealed trait IntList {
 
 case class IntListImpl(head : Int, tail : IntList) extends IntList {
   override def drop(n: Int): IntList = tail match {
-    case _ if n <= 0 => this
+    case _ if n < 0 => undef
+    case _ if n == 0 => this
     case IntNil if n == 1 => IntNil
     case _ => tail.drop(n-1)
   }
 
   override def take(n: Int): IntList = tail match {
-    case _ if n <= 0 => IntNil
+    case _ if n < 0 => undef
+    case _ if n == 0 => IntNil
     case IntNil if n == 1 => this
     case _ => IntListImpl(head, tail.take(n-1))
   }
